@@ -1,6 +1,12 @@
 from scraper import *
 import pytest
 from problem_parser import *
+from generator import generate
+
+def setup_testcases(p):
+    generate(check_all(p.input))
+    for test in p.tests:
+        test.input
 
 
 def test_scraper():

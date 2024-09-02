@@ -51,27 +51,15 @@ text_numbers = {"one": 1,
 
 # Function to check a line of input for the presence of an array
 def check_array(line):
-    is_array = False
-    for c in line:
-        if c == '_':
-            is_array = True
-    if not is_array:
+    if re.search("_", line) is None:
         return
 
-    is_array = False
-    words = line.split()
-    found_index = -1
-    n = len(words)
-    for i in range(n):
-        word = words[i].lower()
-        if word == "integers" or word == "numbers":
-            is_array = True
-            found_index = i
-            break
-    if not is_array:
+    match = re.search("[^ ]+ (integers|numbers) [^ ]+ ", line)
+    if match is None:
         return
 
-    qty = words[found_index - 1].lower().strip(",$")
+    var_details = match.group().split()
+    qty = var_details[0].strip('$')
     try:
         qty = int(qty)
     except ValueError:
@@ -79,8 +67,32 @@ def check_array(line):
             qty = text_numbers[qty]
         except KeyError:
             pass
-    name = words[found_index + 1].lower().strip(",$")
-    i = name.find('_')
-    if i != -1:
-        name = name[:i]
+    name = var_details[2].strip(',$')
+
+    match = re.search(".*_", name)
+    if match is not None:
+        name = match.group()[:-1]
     return Variable("int[{}]".format(qty), name)
+
+def check_str(line):
+    is_str=re.search(".*string.*", line)
+    is_strs=re.search(".*strings.*", line)
+    if is_str and not is_strs :
+        return Variable("string","str")
+    elif is_strs :
+        fix_num
+        is_num = False
+        for num in text_numbers :
+            if re.search(".*"+num+".*", line) :
+                is_num = True
+                fix_num = num
+                break
+        if not is_num :
+            pattern = r".*\s(?=lines)"
+            match = re.search(pattern, line)
+            result = match.group(1).split()[-1][1:-1]
+            return Variable("string[{}]".format(result),"str")
+        else :
+            return Variable("string[{}]".format(text_numbers[fix_num]),"str")
+    else :
+        return

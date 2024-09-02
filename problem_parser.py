@@ -10,7 +10,7 @@ class Variable:
     ----------
     datatype : str
         String representation of the data type of the variable
-        Eg: "string", "bool", "int[n]" (for array)
+        Eg: "string", "bool", "int[n]", "int[n][m]" (for array)
     name : str
         Name of the variable
     """
@@ -73,3 +73,25 @@ def check_array(line):
     if match is not None:
         name = match.group()[:-1]
     return Variable("int[{}]".format(qty), name)
+
+
+all_fxns = (check_array  #, check_integer, check_string
+            ,)
+
+
+# Function to make all the necessary checks
+def check_all(para):
+    para = re.sub(r"\." + " |\n|\n\n", "\n", para)
+    lines = para.split('\n')
+    all_data = []
+    for line in lines:
+        for check in all_fxns:
+            op = check(line)
+            if op is not None:
+                try:
+                    all_data.append(*op)
+                except TypeError:
+                    all_data.append(op)
+                break
+    for v in all_data:
+        print(v.datatype, v.name)

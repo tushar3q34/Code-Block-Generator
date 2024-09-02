@@ -74,6 +74,7 @@ def check_array(line):
         name = match.group()[:-1]
     return Variable("int[{}]".format(qty), name)
 
+
 def check_str(line):
     is_str=re.search(".*string.*", line)
     is_strs=re.search(".*strings.*", line)
@@ -96,3 +97,25 @@ def check_str(line):
             return Variable("string[{}]".format(text_numbers[fix_num]),"str")
     else :
         return
+
+
+all_fxns = (check_array, check_str#, check_integer
+            ,)
+
+
+# Function to make all the necessary checks
+def check_all(para):
+    para = re.sub(r"\." + " |\n|\n\n", "\n", para)
+    lines = para.split('\n')
+    all_data = []
+    for line in lines:
+        for check in all_fxns:
+            op = check(line)
+            if op is not None:
+                try:
+                    all_data.append(*op)
+                except TypeError:
+                    all_data.append(op)
+                break
+    for v in all_data:
+        print(v.datatype, v.name)

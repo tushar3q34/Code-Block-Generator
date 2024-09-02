@@ -10,7 +10,7 @@ class Variable:
     ----------
     datatype : str
         String representation of the data type of the variable
-        Eg: "string", "bool", "int[n]", "int[n][m]" (for array)
+        Eg: "string", "bool", "int[n]" (for array)
     name : str
         Name of the variable
     """
@@ -75,7 +75,31 @@ def check_array(line):
     return Variable("int[{}]".format(qty), name)
 
 
-all_fxns = (check_array  #, check_integer, check_string
+def check_str(line):
+    is_str=re.search(".*string.*", line)
+    is_strs=re.search(".*strings.*", line)
+    if is_str and not is_strs :
+        return Variable("string","str")
+    elif is_strs :
+        fix_num
+        is_num = False
+        for num in text_numbers :
+            if re.search(".*"+num+".*", line) :
+                is_num = True
+                fix_num = num
+                break
+        if not is_num :
+            pattern = r".*\s(?=lines)"
+            match = re.search(pattern, line)
+            result = match.group(1).split()[-1][1:-1]
+            return Variable("string[{}]".format(result),"str")
+        else :
+            return Variable("string[{}]".format(text_numbers[fix_num]),"str")
+    else :
+        return
+
+
+all_fxns = (check_array, check_str#, check_integer
             ,)
 
 

@@ -112,13 +112,13 @@ def check_all(para):
             op = check(line)
             if op is not None:
                 try:
-                    all_data.append(*op)
+                    all_data.extend(op)
                 except TypeError:
                     all_data.append(op)
                 break
-    for v in all_data:
-        print(v.datatype, v.name)
+    return all_data
 
+  
 def check_matrix(line):
     is_matrix = re.search(".*lines.*(numbers|integers)",line)
     if is_matrix :
@@ -130,3 +130,4 @@ def check_matrix(line):
         return Variable("int[{}][{}]".format(num1,num2),arr)
     else :
         return
+

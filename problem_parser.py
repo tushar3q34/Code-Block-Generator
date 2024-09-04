@@ -113,9 +113,8 @@ def check_all(para):
             op = check(line)
             if op is not None:
                 try:
-                    all_data.append(*op)
+                    all_data.extend(op)
                 except TypeError:
                     all_data.append(op)
                 break
-    for v in all_data:
-        print(v.datatype, v.name)
+    return all_data

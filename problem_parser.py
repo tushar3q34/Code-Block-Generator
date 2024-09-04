@@ -8,15 +8,19 @@ class Variable:
 
     Attributes
     ----------
-    datatype : str
-        String representation of the data type of the variable
+    datatype_cpp : str
+        String representation of the data type of the variable in C++
+        Eg: "string", "bool", "int[n]" (for array)
+    datatype_py : str
+        String representation of the data type of the variable in Python
         Eg: "string", "bool", "int[n]" (for array)
     name : str
         Name of the variable
     """
 
-    def __init__(self, datatype, name):
-        self.datatype = datatype
+    def __init__(self, datatype_cpp, datatype_py, name):
+        self.datatype_cpp = datatype_cpp
+        self.datatype_py = datatype_py
         self.name = name
 
 
@@ -72,14 +76,14 @@ def check_array(line):
     match = re.search(".*_", name)
     if match is not None:
         name = match.group()[:-1]
-    return Variable("int[{}]".format(qty), name)
+    return Variable("int[{}]".format(qty), "int[{}]".format(qty), name)
 
 
 def check_str(line):
     is_str=re.search(".*string.*", line)
     is_strs=re.search(".*strings.*", line)
     if is_str and not is_strs :
-        return Variable("string","str")
+        return Variable("string", "str", "s")
     elif is_strs :
         is_num = False
         for num in text_numbers :
@@ -91,9 +95,9 @@ def check_str(line):
             pattern = r".*\s(?=lines)"
             match = re.search(pattern, line)
             result = match.group(1).split()[-1][1:-1]
-            return Variable("string[{}]".format(result),"str")
+            return Variable("string[{}]".format(result), "str[{}]".format(result), "s")
         else :
-            return Variable("string[{}]".format(text_numbers[fix_num]),"str")
+            return Variable("string[{}]".format(text_numbers[fix_num]), "str[{}]".format(text_numbers[fix_num]), "s")
     else :
         return
 
@@ -106,7 +110,7 @@ def check_matrix(line):
         return_val = check_array(result[1])
         num2 = return_val.datatype[4:-1]
         arr = return_val.name
-        return Variable("int[{}][{}]".format(num1,num2),arr)
+        return Variable("int[{}][{}]".format(num1,num2), "int[{}][{}]".format(num1,num2), arr)
     else:
         return
 

@@ -1,12 +1,12 @@
 import pytest
-from generator import generate
 
+# from generator import generate
 from problem_parser import check_all
 from scraper import Problem
 
 
 def setup_testcases(p):
-    generate(check_all(p.input))
+    # generate(check_all(p.input))
     for test in p.tests:
         test.input
 

@@ -1,7 +1,9 @@
-from scraper import *
 import pytest
-from problem_parser import *
 from generator import generate
+
+from problem_parser import check_all
+from scraper import Problem
+
 
 def setup_testcases(p):
     generate(check_all(p.input))
@@ -10,20 +12,20 @@ def setup_testcases(p):
 
 
 def test_scraper():
-    p = Problem("1980","G")
     try:
-        p.input
-        
+        p = Problem("1980", "G")
+        assert len(p.input) == 12
     except:
         pytest.fail("Scraper could not fetch")
-        
+
 
 def test_parser_int():
-    p = Problem("2008","A")
+    p = Problem("2008", "A")
     try:
         check_all(p.input)
     except:
         pytest.fail("Parser failed for pair of integers")
+
 
 # def test_parser_array():
 #     p = Problem("2008", "F")
@@ -32,12 +34,14 @@ def test_parser_int():
 #     except:
 #         pytest.fail("Parser failed for array of integers")
 
-def test_parser_string(p.input):
+
+def test_parser_string():
     p = Problem("1922", "A")
     try:
         check_all(p.input)
     except:
         pytest.fail("Parser failed for string")
+
 
 # def test_parser_matrix():
 #     p = Problem("1980", "E")

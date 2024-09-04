@@ -31,15 +31,15 @@ int main(){
 
 
 def input_var_cpp(encoding):
-    c = encoding.datatype.count('[')
+    c = encoding.datatype_cpp.count('[')
     inp = ''
     if c == 0:
-        inp += "    " + encoding.datatype + ' ' + encoding.name + ";\n"
+        inp += "    " + encoding.datatype_cpp + ' ' + encoding.name + ";\n"
         inp += "    " + "cin >> " + encoding.name + ";\n"
     else:
-        ind = encoding.datatype.find('[')
-        inp += "    " + encoding.datatype[:ind] + ' ' + encoding.name + encoding.datatype[ind:] + ";\n"
-        lims = [x for x in encoding.datatype[ind:][1:-1].split('][')]
+        ind = encoding.datatype_cpp.find('[')
+        inp += "    " + encoding.datatype_cpp[:ind] + ' ' + encoding.name + encoding.datatype_cpp[ind:] + ";\n"
+        lims = [x for x in encoding.datatype_cpp[ind:][1:-1].split('][')]
         for i in range(c):
             line = "    " + "for (int {it} = 0; {it} < {lim}; {it}++){{\n".format(it=chr(ord('i') + i), lim=lims[i])
             for j in range(i):

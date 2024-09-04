@@ -15,8 +15,9 @@ class Variable:
         Name of the variable
     """
 
-    def __init__(self, datatype, name):
-        self.datatype = datatype
+    def __init__(self, datatype_cpp, datatype_py, name):
+        self.datatype_cpp = datatype_cpp
+        self.datatype_py = datatype_py
         self.name = name
 
 
@@ -77,4 +78,4 @@ def check_integer(line):
     # i = name.find('_')
     # if i != -1:
     #     name = name[:i]
-    return Variable("int", name)
+    return Variable("int", "int", name)

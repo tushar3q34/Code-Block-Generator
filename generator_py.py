@@ -51,7 +51,7 @@ def input_var_py(encoding):
         indexing = ''
         for i in range(c):
             indexing += '[' + chr(ord('i') + i) + ']'
-        inp += "    " + encoding.name + indexing + " = cin()" + "\n"
+        inp += "    " + encoding.name + indexing + " = " + encoding.datatype_py[:ind] + "(cin())" + "\n"
     return inp
 
 

@@ -5,21 +5,29 @@ using namespace std;
 void solve(){
 '''
 
-end_cpp = '''
+end_cpp_single = '''
 }
 
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
-    
+    solve();
 }'''
 
+end_cpp_t = '''
+}
 
-def looper(string, i, c, inp_stmt):
-    if c == 0:
-        string += inp_stmt
-        return string
+int main(){
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    int t;
+    cin >> t;
+    while (t--){
+        solve();
+    }
+}'''
 
 
 def input_var_cpp(encoding):
@@ -37,7 +45,7 @@ def input_var_cpp(encoding):
             for j in range(i):
                 inp += "    "
             inp += line
-        for i in range(c + 1):
+        for i in range(c):
             inp += "    "
         indexing = ''
         for i in range(c):
@@ -50,9 +58,12 @@ def input_var_cpp(encoding):
     return inp
 
 
-def full_code_cpp(all_data):
+def full_code_cpp(all_data, t=True):
     code = start_cpp
     for var in all_data:
         code += input_var_cpp(var)
-    code += end_cpp
+    if t:
+        code += end_cpp_t
+    else:
+        code += end_cpp_single
     return code

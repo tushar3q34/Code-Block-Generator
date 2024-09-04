@@ -98,7 +98,20 @@ def check_str(line):
         return
 
 
-all_fxns = (check_array, check_str#, check_integer
+def check_matrix(line):
+    is_matrix = re.search(".*lines.*(numbers|integers)",line)
+    if is_matrix:
+        result = line.split("lines")
+        num1 = result[0].split()[-1][1:-1]
+        return_val = check_array(result[1])
+        num2 = return_val.datatype[4:-1]
+        arr = return_val.name
+        return Variable("int[{}][{}]".format(num1,num2),arr)
+    else:
+        return
+
+
+all_fxns = (check_array, check_str, check_matrix#, check_integer
             ,)
 
 
@@ -117,17 +130,3 @@ def check_all(para):
                     all_data.append(op)
                 break
     return all_data
-
-  
-def check_matrix(line):
-    is_matrix = re.search(".*lines.*(numbers|integers)",line)
-    if is_matrix :
-        result = line.split("lines")
-        num1 = result[0].split()[-1][1:-1]
-        return_val = check_array(result[1])
-        num2 = return_val.datatype[4:-1]
-        arr = return_val.name
-        return Variable("int[{}][{}]".format(num1,num2),arr)
-    else :
-        return
-

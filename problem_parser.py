@@ -81,7 +81,6 @@ def check_str(line):
     if is_str and not is_strs :
         return Variable("string","str")
     elif is_strs :
-        fix_num
         is_num = False
         for num in text_numbers :
             if re.search(".*"+num+".*", line) :
@@ -118,3 +117,17 @@ def check_all(para):
                     all_data.append(op)
                 break
     return all_data
+
+  
+def check_matrix(line):
+    is_matrix = re.search(".*lines.*(numbers|integers)",line)
+    if is_matrix :
+        result = line.split("lines")
+        num1 = result[0].split()[-1][1:-1]
+        return_val = check_array(result[1])
+        num2 = return_val.datatype[4:-1]
+        arr = return_val.name
+        return Variable("int[{}][{}]".format(num1,num2),arr)
+    else :
+        return
+

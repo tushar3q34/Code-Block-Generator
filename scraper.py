@@ -13,7 +13,7 @@ class Problem:
         Link to the Problem at codeforces.com
     soup : bs4.BeautifulSoup
         HTML data of the problem
-    input : list[str]
+    input : list[SampleTest]
         List of strings containing the input specification
     is_testcased : bool
         Indicates whether the problem has testcases (t)
@@ -30,7 +30,15 @@ class Problem:
 
     def __init__(self, contestId, index):
         self.link = f"https://codeforces.com/contest/{contestId}/problem/{index}"
-        self.soup = bs4.BeautifulSoup(requests.get(self.link).text, "html.parser")
+        self.soup = bs4.BeautifulSoup(
+            requests.get(
+                self.link,
+                headers={
+                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; ) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.6478.61 Chrome/126.0.6478.61 Not/A)Brand/8  Safari/537.36"
+                },
+            ).text,
+            "html.parser",
+        )
         self.input = [
             self.mark_latex_symbols(line)
             for line in self.soup.find("div", "input-specification").stripped_strings

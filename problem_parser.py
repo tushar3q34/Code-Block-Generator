@@ -115,8 +115,77 @@ def check_matrix(line):
         return
 
 
-all_fxns = (check_array, check_str, check_matrix#, check_integer
-            ,)
+# Function to check a line of input for the presence of an array
+def check_integer(line):
+    target_string = line
+    res = re.search("[^ ]+ (integer|number) ", target_string)
+
+    if res is None:
+        res2 = re.search("[^ ]+ (integers|numbers) ", target_string)
+
+        if res2 is None:
+            return
+
+        var = res2.group().split()
+        num2 = var[0].strip('$')
+        target_string = target_string[res2.span()[1]:]
+
+        try:
+            num2 = int(num2)
+        except ValueError:
+            try:
+                num2 = text_numbers[num2]
+            except KeyError:
+                print("call check_array")  # call check_array
+                return
+
+        l = []
+        x = 0
+        while x < num2:
+            flag = 0
+            if x < num2 - 2:
+                search_name = re.search("[^ ]*, ", target_string)
+            elif x == num2 - 2:
+                search_name = re.search("[^ ]* and ", target_string)
+                flag = 1
+            elif x == num2 - 1:
+                search_name = re.search("[^ ]*", target_string)
+                flag = 2
+
+            if search_name is None:
+                print("Error")
+            else:
+                var_detail = search_name.group().split()
+                if flag == 0:
+                    name = var_detail[0].strip("$,")
+                elif flag == 1:
+                    name = var_detail[0].strip("$")
+                else:
+                    name = var_detail[0].strip("$.")
+                l.append(name)
+
+            target_string = target_string[search_name.span()[1]:]
+            x = x + 1
+
+        obj = []
+
+        for y in l:
+            obj.append(Variable("int", "int", y))
+
+        return obj
+
+    else:
+        index = res.group().split()
+        target_string = target_string[res.span()[1]:]
+
+        search_string = re.search("[^ ]*", target_string)
+        var_detail = search_string.group().split()
+        name = var_detail[0].strip('$.')
+
+        return Variable("int", "int", name)
+
+
+all_fxns = (check_array, check_integer, check_str, check_matrix,)
 
 
 # Function to make all the necessary checks

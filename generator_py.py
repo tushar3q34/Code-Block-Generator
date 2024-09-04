@@ -64,8 +64,3 @@ def full_code_py(all_data, t=True):
     else:
         code += end_py_single
     return code
-
-from problem_parser import *
-
-v = Variable("int[n][m]", "int[n][m]", "arr")
-print(full_code_py([v]))

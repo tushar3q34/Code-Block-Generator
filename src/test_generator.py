@@ -4,7 +4,7 @@ import os
 from generator_cpp import full_code_cpp
 from problem_parser import check_all
 from scraper import Problem
-
+# from fetcher import fetch
 
 
 
@@ -30,3 +30,16 @@ def test_gen_pair_integers():
         write_file(input_file,test_raw)
         os.system("python3 main.py < input.txt ")
 
+def test_gen_pair_integers():
+    prob = "2008A"
+    input_string,tests = fetch(prob)
+    #code_str = full_code_cpp(check_all(input_string))
+    code_str = """T = int(input())\nfor i in range(T):\n\tx,y = map(int,input().split(' '))"""
+
+    write_file(code_name,code_str)
+    for test in tests:
+        test_raw = test[6:] # dropping the input word
+        write_file(input_file,test_raw)
+        os.system("python3 main.py < input.txt ")
+
+test_gen_pair_integers()

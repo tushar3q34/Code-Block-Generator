@@ -39,10 +39,13 @@ class Problem:
             ).text,
             "html.parser",
         )
-        self.input = [
-            self.mark_latex_symbols(line)
-            for line in self.soup.find("div", "input-specification").stripped_strings
-        ]
+        try:
+            self.input = [
+                self.mark_latex_symbols(line)
+                for line in self.soup.find("div", "input-specification").stripped_strings
+            ]
+        except:
+            raise Exception("Fetch failed")
         self.is_testcased = True
         self.tests = self.get_sample_tests(self.soup)
 

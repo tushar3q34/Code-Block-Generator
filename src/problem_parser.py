@@ -67,11 +67,11 @@ def ignore(line):
 
 # Function to check a line of input for the presence of an array
 def check_array(line):
-    if re.search("_", line) is None:
-        return
-
     match = re.search("[^ ]+ (integers|numbers) [^ ]+ ", line)
     if match is None:
+        return
+
+    if re.search("_", match.group()) is None:
         return
 
     var_details = match.group().split()
@@ -132,7 +132,21 @@ def check_integer(line):
     target_string = line
     res = re.search("[^ ]+ (integer|number) ", target_string)
 
-    if res is None:
+    if res is not None:
+        target_string = target_string[res.span()[1]:]
+        if target_string[0:2] == "of" and res.group().split()[1] == "number":
+            res = None
+            target_string = line
+
+    if res is not None:
+        index = res.group().split()
+        search_string = re.search("[^ ]*", target_string)
+        var_detail = search_string.group().split()
+        name = var_detail[0].strip('$.')
+
+        return Variable("int", "int", name)
+
+    else:
         res2 = re.search("[^ ]+ (integers|numbers) ", target_string)
 
         if res2 is None:
@@ -185,16 +199,6 @@ def check_integer(line):
             obj.append(Variable("int", "int", y))
 
         return obj
-
-    else:
-        index = res.group().split()
-        target_string = target_string[res.span()[1]:]
-
-        search_string = re.search("[^ ]*", target_string)
-        var_detail = search_string.group().split()
-        name = var_detail[0].strip('$.')
-
-        return Variable("int", "int", name)
 
 
 # IMPORTANT : Priority order is decided here

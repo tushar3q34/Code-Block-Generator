@@ -24,18 +24,21 @@ def write_file(file_name,code_str):
 def test_gen_pair_integers():
     #p = Problem("2008", "A")
     #inp = '''The only line of each test case contains two integers $a$ and $b$ ($0 \\le a, b \\le 10^9$)  — the number of '1's and the number of '2's in the array.'''
+
     #p = Problem("2008", "C")
     #inp = '''The only line of each test case contains two integers $l$ and $r$ ($1 \\le l, r \\le 10^9$).'''
-    p = Problem("2008", "D")
-    inp = '''The first line contains a single integer $t$ ($1 \\le t \\le 10^4$)  — the number of test cases.
 
-The first line of each test case contains a single integer $n$ ($1 \\le n \\le 2 \\cdot 10^5$)  — the number of elements in the array.
+    #p = Problem("2008", "D")
+    #inp = '''The first line contains a single integer $t$ ($1 \\le t \\le 10^4$)  — the number of test cases.
 
-The second line of each test case contains $n$ integers $p_1, p_2, ..., p_n$ ($1 \\le p_i \\le n$)  — the elements of the permutation.
+#The first line of each test case contains a single integer $n$ ($1 \\le n \\le 2 \\cdot 10^5$)  — the number of elements in the array.
 
-The third line of each test case contains a string $s$ of length $n$, consisting of '0' and '1'. If $s_i = 0$, then the number $p_i$ is colored black; if $s_i = 1%, then the number $p_i$ is colored white.
+#The second line of each test case contains $n$ integers $p_1, p_2, ..., p_n$ ($1 \\le p_i \\le n$)  — the elements of the permutation.
 
-It is guaranteed that the sum of $n$ across all test cases does not exceed %2 \\cdot 10^5$.'''
+#The third line of each test case contains a string $s$ of length $n$, consisting of '0' and '1'. If $s_i = 0$, then the number $p_i$ is colored black; if $s_i = 1%, then the number $p_i$ is colored white.
+
+#It is guaranteed that the sum of $n$ across all test cases does not exceed %2 \\cdot 10^5$.'''
+
     #p = Problem("2002", "G")
     #inp = '''Each test contains multiple test cases. The first line contains the number of test cases $t$ ($1 \\le t \\le 100$). The description of the test cases follows.
 
@@ -46,6 +49,17 @@ It is guaranteed that the sum of $n$ across all test cases does not exceed %2 \\
 #Each of the next $n$ lines contains $n-1$ integers separated by single spaces — the matrix $r$ ($0 \\le r_{x, y} \\le 2n - 2$).
 
 #It is guaranteed that the sum of all $n^3$ does not exceed $8000$.'''
+
+    #p = Problem("2008", "G")
+    inp = '''The first line contains a single integer $t$ ($1 \\le t \\le 10^4$)  — the number of test cases.
+
+The first line of each test case contains two integers $n$ and $k$ ($1 \\le n \le 2 \\cdot 10^5, 1 \\le k \\le 10^9$)  — the number of elements in the array and the value $k$ for $mex_k$.
+
+The second line of each test case contains $n$ integers $a_1, a_2, ..., a_n$ ($1 \\le a_i \\le 10^9$)  — the elements of the array.
+
+It is guaranteed that the sum of $n$ across all test cases does not exceed %2 \\cdot 10^5$.
+
+'''
 
     #code_str = full_code_cpp(check_all(p.input))
     code_str_py = full_code_py(check_all(inp))

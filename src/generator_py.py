@@ -12,13 +12,15 @@ def cin():
 def solve():
 '''
 
-end_py_single = '''
+end_py_single = '''    
+
 
 solve()
 
 '''
 
-end_py_t = '''
+end_py_t = '''    
+
 
 for tc in range(int(input())):
     solve()
@@ -30,7 +32,7 @@ def input_var_py(encoding):
     c = encoding.datatype_py.count('[')
     inp = ''
     if c == 0:
-        inp += "    " + encoding.name + " = " + encoding.datatype_py + "(cin())"
+        inp += "    " + encoding.name + " = " + encoding.datatype_py + "(cin())\n"
     else:
         ind = encoding.datatype_py.find('[')
         lims = [x for x in encoding.datatype_py[ind:][1:-1].split('][')]
@@ -51,7 +53,7 @@ def input_var_py(encoding):
         indexing = ''
         for i in range(c):
             indexing += '[' + chr(ord('i') + i) + ']'
-        inp += "    " + encoding.name + indexing + " = " + encoding.datatype_py[:ind] + "(cin())" + "\n"
+        inp += "    " + encoding.name + indexing + " = " + encoding.datatype_py[:ind] + "(cin())\n"
     return inp
 
 

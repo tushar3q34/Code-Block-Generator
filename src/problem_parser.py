@@ -97,19 +97,57 @@ def check_str(line):
     if is_str and not is_strs :
         return Variable("string", "str", "s")
     elif is_strs :
-        is_num = False
-        for num in text_numbers :
-            if re.search(".*"+num+".*", line) :
-                is_num = True
-                fix_num = num
-                break
-        if not is_num :
-            pattern = r".*\s(?=lines)"
-            match = re.search(pattern, line)
-            result = match.group(1).split()[-1][1:-1]
-            return Variable("string[{}]".format(result), "str[{}]".format(result), "s")
-        else :
-            return Variable("string[{}]".format(text_numbers[fix_num]), "str[{}]".format(text_numbers[fix_num]), "s")
+        res2 = re.search("[^ ]+ strings ", target_string)
+
+        if res2 is None:
+            return
+
+        var = res2.group().split()
+        num2 = var[0].strip('$')
+        target_string = target_string[res2.span()[1]:]
+
+        try:
+            num2 = int(num2)
+        except ValueError:
+            try:
+                num2 = text_numbers[num2]
+            except KeyError:
+                return
+
+        l = []
+        x = 0
+        while x < num2:
+            flag = 0
+            if x < num2 - 2:
+                search_name = re.search("[^ ]*, ", target_string)
+            elif x == num2 - 2:
+                search_name = re.search("[^ ]* and ", target_string)
+                flag = 1
+            elif x == num2 - 1:
+                search_name = re.search("[^ ]*", target_string)
+                flag = 2
+
+            if search_name is None:
+                print("Error")
+            else:
+                var_detail = search_name.group().split()
+                if flag == 0:
+                    name = var_detail[0].strip("$,")
+                elif flag == 1:
+                    name = var_detail[0].strip("$")
+                else:
+                    name = var_detail[0].strip("$.")
+                l.append(name)
+
+            target_string = target_string[search_name.span()[1]:]
+            x = x + 1
+
+        obj = []
+
+        for y in l:
+            obj.append(Variable("string", "str", y))
+
+        return obj
     else :
         return
 
@@ -162,7 +200,6 @@ def check_integer(line):
             try:
                 num2 = text_numbers[num2]
             except KeyError:
-                print("call check_array")  # call check_array
                 return
 
         l = []

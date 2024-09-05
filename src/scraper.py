@@ -42,7 +42,9 @@ class Problem:
         try:
             self.input = [
                 self.mark_latex_symbols(line)
-                for line in self.soup.find("div", "input-specification").stripped_strings
+                for line in self.soup.find(
+                    "div", "input-specification"
+                ).stripped_strings
             ]
         except:
             raise Exception("Fetch failed")

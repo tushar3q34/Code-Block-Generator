@@ -1,6 +1,8 @@
 # This file contains all the functions to parse the input string
 
-from scraper import *
+import re
+
+from scraper import Problem
 
 
 class Variable:
@@ -41,16 +43,18 @@ class Wrapper:
 
 
 # Useful where questions might use words instead of digits for small numbers
-text_numbers = {"one": 1,
-                "two": 2,
-                "three": 3,
-                "four": 4,
-                "five": 5,
-                "six": 6,
-                "seven": 7,
-                "eight": 8,
-                "nine": 9,
-                "ten": 10}
+text_numbers = {
+    "one": 1,
+    "two": 2,
+    "three": 3,
+    "four": 4,
+    "five": 5,
+    "six": 6,
+    "seven": 7,
+    "eight": 8,
+    "nine": 9,
+    "ten": 10,
+}
 
 
 def ignore(line):
@@ -75,7 +79,7 @@ def check_array(line):
         return
 
     var_details = match.group().split()
-    qty = var_details[0].strip('$')
+    qty = var_details[0].strip("$")
     try:
         qty = int(qty)
     except ValueError:
@@ -83,7 +87,7 @@ def check_array(line):
             qty = text_numbers[qty]
         except KeyError:
             pass
-    name = var_details[2].strip(',$')
+    name = var_details[2].strip(",$")
 
     match = re.search(".*_", name)
     if match is not None:
@@ -92,19 +96,19 @@ def check_array(line):
 
 
 def check_str(line):
-    is_str=re.search(".*string.*", line)
-    is_strs=re.search(".*strings.*", line)
-    if is_str and not is_strs :
+    is_str = re.search(".*string.*", line)
+    is_strs = re.search(".*strings.*", line)
+    if is_str and not is_strs:
         return Variable("string", "str", "s")
-    elif is_strs :
+    elif is_strs:
         res2 = re.search("[^ ]+ strings ", target_string)
 
         if res2 is None:
             return
 
         var = res2.group().split()
-        num2 = var[0].strip('$')
-        target_string = target_string[res2.span()[1]:]
+        num2 = var[0].strip("$")
+        target_string = target_string[res2.span()[1] :]
 
         try:
             num2 = int(num2)
@@ -139,7 +143,7 @@ def check_str(line):
                     name = var_detail[0].strip("$.")
                 l.append(name)
 
-            target_string = target_string[search_name.span()[1]:]
+            target_string = target_string[search_name.span()[1] :]
             x = x + 1
 
         obj = []
@@ -148,19 +152,21 @@ def check_str(line):
             obj.append(Variable("string", "str", y))
 
         return obj
-    else :
+    else:
         return
 
 
 def check_matrix(line):
-    is_matrix = re.search(".*lines.*(numbers|integers)",line)
+    is_matrix = re.search(".*lines.*(numbers|integers)", line)
     if is_matrix:
         result = line.split("lines")
         num1 = result[0].split()[-1][1:-1]
         return_val = check_array(result[1])
         num2 = return_val.datatype_cpp[4:-1]
         arr = return_val.name
-        return Variable("int[{}][{}]".format(num1,num2), "int[{}][{}]".format(num1,num2), arr)
+        return Variable(
+            "int[{}][{}]".format(num1, num2), "int[{}][{}]".format(num1, num2), arr
+        )
     else:
         return
 
@@ -171,7 +177,7 @@ def check_integer(line):
     res = re.search("[^ ]+ (integer|number) ", target_string)
 
     if res is not None:
-        target_string = target_string[res.span()[1]:]
+        target_string = target_string[res.span()[1] :]
         if target_string[0:2] == "of" and res.group().split()[1] == "number":
             res = None
             target_string = line
@@ -180,7 +186,7 @@ def check_integer(line):
         index = res.group().split()
         search_string = re.search("[^ ]*", target_string)
         var_detail = search_string.group().split()
-        name = var_detail[0].strip('$.')
+        name = var_detail[0].strip("$.")
 
         return Variable("int", "int", name)
 
@@ -191,8 +197,8 @@ def check_integer(line):
             return
 
         var = res2.group().split()
-        num2 = var[0].strip('$')
-        target_string = target_string[res2.span()[1]:]
+        num2 = var[0].strip("$")
+        target_string = target_string[res2.span()[1] :]
 
         try:
             num2 = int(num2)
@@ -227,7 +233,7 @@ def check_integer(line):
                     name = var_detail[0].strip("$.")
                 l.append(name)
 
-            target_string = target_string[search_name.span()[1]:]
+            target_string = target_string[search_name.span()[1] :]
             x = x + 1
 
         obj = []
@@ -239,19 +245,18 @@ def check_integer(line):
 
 
 # IMPORTANT : Priority order is decided here
-all_fxns = (check_matrix,
-            check_array,
-            check_str,
-            check_integer,
-            )
+all_fxns = (
+    check_matrix,
+    check_array,
+    check_str,
+    check_integer,
+)
 
 
 # Function to make all the necessary checks
-def check_all(para):
-    para = re.sub(r"\." + " |\n|\n\n", "\n", para)
-    lines = para.split('\n')
+def check_all(inp):
     all_data = []
-    for line in lines:
+    for line in inp:
         if ignore(line):
             continue
         for check in all_fxns:
@@ -261,6 +266,5 @@ def check_all(para):
                     all_data.extend(op)
                 except TypeError:
                     all_data.append(op)
-                print(check)
                 break
     return all_data

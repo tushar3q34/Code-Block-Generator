@@ -53,6 +53,18 @@ text_numbers = {"one": 1,
                 "ten": 10}
 
 
+def ignore(line):
+    if "number of test cases" in line:
+        return True
+    if "sum" in line and "across all test cases" in line:
+        return True
+    if "sum" in line and "over all test cases" in line:
+        return True
+    if "if" in line and "then" in line:
+        return True
+    return False
+
+
 # Function to check a line of input for the presence of an array
 def check_array(line):
     if re.search("_", line) is None:
@@ -108,7 +120,7 @@ def check_matrix(line):
         result = line.split("lines")
         num1 = result[0].split()[-1][1:-1]
         return_val = check_array(result[1])
-        num2 = return_val.datatype[4:-1]
+        num2 = return_val.datatype_cpp[4:-1]
         arr = return_val.name
         return Variable("int[{}][{}]".format(num1,num2), "int[{}][{}]".format(num1,num2), arr)
     else:
@@ -185,7 +197,12 @@ def check_integer(line):
         return Variable("int", "int", name)
 
 
-all_fxns = (check_array, check_integer, check_str, check_matrix,)
+# IMPORTANT : Priority order is decided here
+all_fxns = (check_matrix,
+            check_array,
+            check_str,
+            check_integer,
+            )
 
 
 # Function to make all the necessary checks
@@ -194,6 +211,8 @@ def check_all(para):
     lines = para.split('\n')
     all_data = []
     for line in lines:
+        if ignore(line):
+            continue
         for check in all_fxns:
             op = check(line)
             if op is not None:
@@ -201,5 +220,6 @@ def check_all(para):
                     all_data.extend(op)
                 except TypeError:
                     all_data.append(op)
+                print(check)
                 break
     return all_data

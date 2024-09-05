@@ -12,14 +12,14 @@ def cin():
 def solve():
 '''
 
-end_py_single = '''
+end_py_single = '''    
 
 
 solve()
 
 '''
 
-end_py_t = '''
+end_py_t = '''    
 
 
 for tc in range(int(input())):
@@ -53,7 +53,7 @@ def input_var_py(encoding):
         indexing = ''
         for i in range(c):
             indexing += '[' + chr(ord('i') + i) + ']'
-        inp += "    " + encoding.name + indexing + " = " + encoding.datatype_py[:ind] + "(cin())" + "\n"
+        inp += "    " + encoding.name + indexing + " = " + encoding.datatype_py[:ind] + "(cin())\n"
     return inp
 
 

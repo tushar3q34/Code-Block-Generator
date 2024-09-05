@@ -5,7 +5,7 @@ using namespace std;
 void solve(){
 '''
 
-end_cpp_single = '''
+end_cpp_single = '''    
 }
 
 int main(){
@@ -15,7 +15,7 @@ int main(){
     solve();
 }'''
 
-end_cpp_t = '''
+end_cpp_t = '''    
 }
 
 int main(){

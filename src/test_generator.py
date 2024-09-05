@@ -32,6 +32,3 @@ def test_gen_pair_integers():
 
     os.system(f"g++ -o ./a.out {code_name_cpp}")
     os.system(f"./a.out < {input_file}")
-
-
-test_gen_pair_integers()

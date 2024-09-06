@@ -92,6 +92,7 @@ def check_array(line):
 
 
 def check_str(line):
+    target_string = line
     is_str=re.search(".*string.*", line)
     is_strs=re.search(".*strings.*", line)
     if is_str and not is_strs :

@@ -19,9 +19,8 @@ def fetch(prob):
 
     try:
         p = Problem(contestId, index)
-        p = {"input": p.input, "tests": p.tests}
+        p = {"input": rf"{p.input}", "tests": rf"{p.tests}"}
         write_file(f"{path}/{contestId}_{index}.txt", str(p))
-
     except:
         with open(f"{path}/{contestId}_{index}.txt", "r") as f:
             p = eval(f.read())
